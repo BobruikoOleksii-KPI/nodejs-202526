@@ -33,5 +33,13 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2"
+  },
+  "lint-staged": {
+  "*.js": [
+    "prettier --write",
+    "eslint --fix",
+    "npm test",
+    "npm run build"
+  ]
   }
 }
