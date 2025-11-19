@@ -36,32 +36,6 @@ The application is divided into modular components following an MVC-inspired pat
 
 ### Interaction Description (Component Diagram)
 
-Requests flow through components as shown in this text-based UML-like diagram:
-
-+----------------+     +----------------+
-|      Client    |<--->|     Routes     |
-+----------------+     +----------------+
-         |
-         v
-+----------------+     +----------------+
-|   Middlewares  |<--->|   Controllers  |
-+----------------+     +----------------+
-         |
-         v
-+----------------+
-|     Services   |
-+----------------+
-         |
-         v
-+----------------+
-|      Models    |
-+----------------+
-         |
-         v
-+----------------+
-|     Database   |
-+----------------+
-
 For a visual representation, see [docs/component-diagram.png](docs/component-diagram.png).
 
 **Flow Explanation**:
@@ -104,23 +78,9 @@ The data focuses on users and their tasks, with a simple relational structure. C
 ### Relationships
 - **User 1 --- * Task** (One-to-Many): Users own multiple tasks; tasks link back via userId. Ensures data ownership and querying (e.g., get user's tasks).
 
-### ER Diagram (Text-Based)
+### ER Diagram
 
-+----------+          +----------+
-|   User   | 1 ---- * |   Task   |
-+----------+          +----------+
-| id (PK)  |          | id (PK)  |
-| username |          | title    |
-| email    |          | desc     |
-| password |          | dueDate  |
-| createdAt|          | priority |
-+----------+          | status   |
-                      |userId(FK)|
-                      | category |
-                      | createdAt|
-                      +----------+
-
-For a visual ER diagram, see [docs/er-diagram.png](docs/er-diagram.png) (if created).
+For a visual ER diagram, see [docs/er-diagram.png](docs/er-diagram.png).
 
 This model supports key queries like filtering tasks by user/status, and aggregations (e.g., count overdue tasks).
 
