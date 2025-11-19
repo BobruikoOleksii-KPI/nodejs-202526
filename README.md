@@ -84,6 +84,37 @@ For a visual ER diagram, see [docs/er-diagram.png](docs/er-diagram.png).
 
 This model supports key queries like filtering tasks by user/status, and aggregations (e.g., count overdue tasks).
 
+## Data Operations in Key Scenarios
+
+This section describes how data (Users and Tasks) is updated, changed, or aggregated based on the app's primary use cases
+
+### Key Scenarios and Operations
+- **User Registration/Login**:
+  - **Creation**: Insert new User with hashed password (future: in usersService.js). Aggregate: Query for unique email/username to prevent duplicates (e.g., find() check)
+  - **Change**: Update lastLogin timestamp on successful auth
+  - **Aggregation**: Count active users (e.g., filter by recent logins)
+
+- **Create Task**:
+  - **Creation**: Insert new Task object into array (tasksService.createTask()). Assign auto-ID, set createdAt, link userId from auth
+  - **Change/Aggregation**: No immediate change; aggregate total tasks per user post-creation (e.g., length after push)
+
+- **Read Tasks**:
+  - **Query**: Filter tasks by userId/status/priority (tasksService.getAllTasks() with .filter())
+  - **Aggregation**: Group by status (e.g., reduce() to count pending/completed) or sort by dueDate
+
+- **Update Task**:
+  - **Change**: Modify attributes by ID (tasksService.updateTask()). E.g., patch status to 'completed'—find index, spread updates ({ ...task, ...req.body })
+  - **Aggregation**: Recalculate user's completion rate (count completed / total) after update
+
+- **Delete Task**:
+  - **Deletion**: Remove by ID (tasksService.deleteTask() with splice()). Soft-delete option: Set deletedAt instead of remove
+  - **Aggregation**: Update task counts post-deletion (e.g., re-filter active tasks)
+
+- **Aggregate Overdue Tasks** (Reporting Scenario):
+  - **Aggregation**: Filter tasks where dueDate < now() and status != 'completed' (e.g., .filter(t => new Date(t.dueDate) < new Date() && t.status !== 'completed'))
+  - **Change**: Bulk update overdue to 'delayed' status if needed
+  - **Example**: Service method to return summary { overdueCount: n, byPriority: {...} }
+
 ### Setup Instructions
 
 1. Clone the repo: `git clone https://github.com/BobruikoOleksii-KPI/nodejs-202526.git`
