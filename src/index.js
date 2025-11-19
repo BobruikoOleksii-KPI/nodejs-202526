@@ -1,0 +1,21 @@
+const express = require('express');
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.use(express.json());
+
+const tasksRouter = require('./routes/tasks');
+
+app.use('/api/tasks', tasksRouter);
+
+app.get('/', (req, res) => {
+  res.send('Hello from Node.js Task Manager API!');
+});
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
