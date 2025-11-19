@@ -38,29 +38,31 @@ The application is divided into modular components following an MVC-inspired pat
 
 Requests flow through components as shown in this text-based UML-like diagram:
 
-+----------------+ +----------------+
-| Client |<--->| Routes |
-+----------------+ +----------------+
-|
-v
-+----------------+ +----------------+
-| Middlewares |<--->| Controllers |
-+----------------+ +----------------+
-|
-v
++----------------+     +----------------+
+|      Client    |<--->|     Routes     |
++----------------+     +----------------+
+         |
+         v
++----------------+     +----------------+
+|   Middlewares  |<--->|   Controllers  |
++----------------+     +----------------+
+         |
+         v
 +----------------+
-| Services |
+|     Services   |
 +----------------+
-|
-v
+         |
+         v
 +----------------+
-| Models |
+|      Models    |
 +----------------+
-|
-v
+         |
+         v
 +----------------+
-| Database |
+|     Database   |
 +----------------+
+
+For a visual representation, see [docs/component-diagram.png](docs/component-diagram.png).
 
 **Flow Explanation**:
 
@@ -73,6 +75,54 @@ v
 - Interactions are synchronous/async via promises; error handling bubbles up via middleware
 
 This structure allows easy extension (e.g., add user routes) and testing (mock services/models)
+
+Example Flow: A POST /api/tasks request enters via Routes (tasks.js), applies Middlewares (e.g., JSON parsing), reaches Controllers (tasksController.js) to validate and call Services (tasksService.js) for creation logic, which updates Models (taskModel.js mocks). Response returns 201 with new task JSON.
+
+## Data Model and Relationships
+
+The data focuses on users and their tasks, with a simple relational structure. Currently using in-memory mocks in models; planned for MongoDB (NoSQL) or PostgreSQL (SQL) integration.
+
+### Entities and Attributes
+- **User**:
+  - id (PK, integer)
+  - username (string, unique)
+  - email (string, unique)
+  - password (string, hashed)
+  - createdAt (date)
+
+- **Task**:
+  - id (PK, integer)
+  - title (string, required)
+  - description (string)
+  - dueDate (date)
+  - priority (enum: low/medium/high)
+  - status (enum: pending/in-progress/completed)
+  - userId (FK, references User.id)
+  - category (string)
+  - createdAt (date)
+
+### Relationships
+- **User 1 --- * Task** (One-to-Many): Users own multiple tasks; tasks link back via userId. Ensures data ownership and querying (e.g., get user's tasks).
+
+### ER Diagram (Text-Based)
+
++----------+          +----------+
+|   User   | 1 ---- * |   Task   |
++----------+          +----------+
+| id (PK)  |          | id (PK)  |
+| username |          | title    |
+| email    |          | desc     |
+| password |          | dueDate  |
+| createdAt|          | priority |
++----------+          | status   |
+                      |userId(FK)|
+                      | category |
+                      | createdAt|
+                      +----------+
+
+For a visual ER diagram, see [docs/er-diagram.png](docs/er-diagram.png) (if created).
+
+This model supports key queries like filtering tasks by user/status, and aggregations (e.g., count overdue tasks).
 
 ### Setup Instructions
 
