@@ -12,6 +12,10 @@ const tasksRouter = require('./routes/tasks');
 
 app.use('/api/tasks', tasksRouter);
 
+const usersRouter = require('./routes/users');
+
+app.use('/api/users', usersRouter);
+
 app.get('/', (req, res) => {
   res.send('Hello from Node.js Task Manager API!');
 });
