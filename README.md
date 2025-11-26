@@ -118,18 +118,23 @@ This section describes how data (Users and Tasks) is updated, changed, or aggreg
   - **Change**: Bulk update overdue to 'delayed' status if needed
   - **Example**: Service method to return summary { overdueCount: n, byPriority: {...} }
 
-## Interactive Prototype
 
-- **User Registration**: POST /api/users/register with body { "username": "string", "email": "string", "password": "string" }. Creates user if unique; returns userId.
+## Integration with Remote Data Sources
+
+- Integrated MongoDB Atlas as the remote data source using Mongoose.
+- Replaced static in-memory data with async DB operations in models and services.
+- Updated controllers for error handling and tested CRUD/overdue endpoints with PowerShell.
+
+- **User Registration**: POST /api/users/register with body { "username": "string", "email": "string", "password": "string" }. Creates user if unique; returns userId (_id from DB).
 - **User Login**: POST /api/users/login with body { "email": "string", "password": "string" }. Returns mock token if valid.
-- **Create Task**: POST /api/tasks with body { "title": "string", "description": "string", "dueDate": "YYYY-MM-DD", "priority": "low/medium/high", "status": "pending/in-progress/completed" }. Requires token; assigns userId.
-- **Read All Tasks**: GET /api/tasks. Returns user's tasks only (filtered by userId).
-- **Read Single Task**: GET /api/tasks/:id. Returns if owned; 404 else.
-- **Update Task**: PATCH /api/tasks/:id with body { "status": "completed" } (or other fields). Updates if owned.
-- **Delete Task**: DELETE /api/tasks/:id. Removes if owned.
-- **Aggregate Overdue Tasks**: GET /api/tasks/overdue. Returns user's overdue tasks (dueDate < now, status != completed).
+- **Create Task**: POST /api/tasks with body { "title": "string", "description": "string", "dueDate": "YYYY-MM-DD", "priority": "low/medium/high", "status": "pending/in-progress/completed" }. Requires token; assigns userId and persists to DB.
+- **Read All Tasks**: GET /api/tasks. Returns user's tasks only (queried from DB by userId).
+- **Read Single Task**: GET /api/tasks/:id. Returns if owned; 404 else (queried from DB).
+- **Update Task**: PUT /api/tasks/:id with body { "status": "completed" } (or other fields). Updates in DB if owned.
+- **Delete Task**: DELETE /api/tasks/:id. Removes from DB if owned.
+- **Aggregate Overdue Tasks**: GET /api/tasks/overdue. Returns user's overdue tasks from DB (dueDate < now, status != completed).
+Use Postman, curl, or PowerShell to test. Start server with npm start; ensure MONGODB_URI in .env for connection.
 
-Use Postman, curl, or PowerShell to test. Start server with npm start
 
 ### Setup Instructions
 
