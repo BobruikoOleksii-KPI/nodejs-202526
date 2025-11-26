@@ -4,11 +4,11 @@
   "description": "This is a RESTful API built with Node.js for managing tasks (to-do items), it serves as the backend for a potential task management application, handling user authentication and task CRUD operations",
   "main": "index.js",
   "scripts": {
-  "start": "node index.js",
-  "lint": "eslint .",
-  "format": "prettier --write .",
-  "test": "echo 'Tests passed' && exit 0",
-  "build": "echo 'Build successful' && exit 0"
+    "start": "node src/index.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "echo 'Tests passed' && exit 0",
+    "build": "echo 'Build successful' && exit 0"
   },
   "repository": {
     "type": "git",
@@ -24,22 +24,26 @@
   "homepage": "https://github.com/BobruikoOleksii-KPI/nodejs-202526#readme",
   "dependencies": {
     "dotenv": "^17.2.3",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^9.0.0"
   },
   "devDependencies": {
+    "@eslint/compat": "^2.0.0",
     "eslint": "^9.39.1",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.6",
     "prettier": "^3.6.2"
   },
   "lint-staged": {
-  "*.js": [
-    "prettier --write",
-    "eslint --fix",
-    "npm test",
-    "npm run build"
-  ]
+    "*.js": [
+      "prettier --write",
+      "eslint --fix",
+      "npm test",
+      "npm run build"
+    ]
   }
 }

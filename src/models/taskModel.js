@@ -1,24 +1,14 @@
-const mockTasks = [
-  {
-    id: 1,
-    title: 'Sample Task 1',
-    description: 'This is a test task',
-    dueDate: '2025-12-01',
-    priority: 'medium',
-    status: 'pending',
-    userId: 1,
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    title: 'Sample Task 2',
-    description: 'Another test',
-    dueDate: '2025-11-25',
-    priority: 'high',
-    status: 'in-progress',
-    userId: 1,
-    createdAt: new Date().toISOString(),
-  },
-];
+const mongoose = require('mongoose');
 
-exports.getMockTasks = () => mockTasks;
+const taskSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  description: String,
+  dueDate: Date,
+  priority: { type: String, enum: ['low', 'medium', 'high'] },
+  status: { type: String, enum: ['pending', 'in-progress', 'completed'] },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  category: String,
+  createdAt: { type: Date, default: Date.now },
+});
+
+module.exports = mongoose.model('Task', taskSchema);

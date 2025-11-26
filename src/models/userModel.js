@@ -1,11 +1,10 @@
-const mockUsers = [
-  {
-    id: 1,
-    username: 'testuser',
-    email: 'test@example.com',
-    password: 'hashed_testpass',
-    createdAt: new Date().toISOString(),
-  },
-];
+const mongoose = require('mongoose');
 
-exports.getMockUsers = () => mockUsers;
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
+});
+
+module.exports = mongoose.model('User', userSchema);

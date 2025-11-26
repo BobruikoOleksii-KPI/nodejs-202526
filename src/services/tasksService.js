@@ -1,45 +1,28 @@
-const taskModel = require('../models/taskModel');
+const Task = require('../models/taskModel');
 
-const tasks = taskModel.getMockTasks();
+exports.getAllTasks = async (userId) => Task.find({ userId });
 
-exports.getAllTasks = (userId) => {
-  const userTasks = tasks.filter((t) => t.userId === userId);
-  return userTasks;
-};
-
-exports.createTask = (taskData, userId) => {
-  const newTask = {
-    id: tasks.length + 1,
-    ...taskData,
-    userId,
-    createdAt: new Date().toISOString(),
-  };
-  tasks.push(newTask);
+exports.createTask = async (taskData, userId) => {
+  const newTask = new Task({ ...taskData, userId });
+  await newTask.save();
   return newTask;
 };
 
-exports.getTaskById = (id, userId) => {
-  const task = tasks.find((t) => t.id === parseInt(id, 10) && t.userId === userId);
-  return task;
+exports.getTaskById = async (id, userId) => Task.findOne({ _id: id, userId });
+
+exports.updateTask = async (id, updates, userId) => {
+  // eslint-disable-next-line no-unused-expressions
+  id;
+  return Task.findOneAndUpdate({ _id: id, userId }, updates, { new: true });
 };
 
-exports.updateTask = (id, updates, userId) => {
-  const taskIndex = tasks.findIndex((t) => t.id === parseInt(id, 10) && t.userId === userId);
-  if (taskIndex === -1) return null;
-  tasks[taskIndex] = { ...tasks[taskIndex], ...updates };
-  return tasks[taskIndex];
-};
+exports.deleteTask = async (id, userId) => !!Task.findOneAndDelete({ _id: id, userId });
 
-exports.deleteTask = (id, userId) => {
-  const taskIndex = tasks.findIndex((t) => t.id === parseInt(id, 10) && t.userId === userId);
-  if (taskIndex === -1) return false;
-  tasks.splice(taskIndex, 1);
-  return true;
-};
-
-exports.getOverdueTasks = (userId) => {
+exports.getOverdueTasks = async (userId) => {
   const now = new Date();
-  const userTasks = tasks.filter((t) => t.userId === userId);
-  const overdue = userTasks.filter((t) => new Date(t.dueDate) < now && t.status !== 'completed');
-  return overdue;
+  return Task.find({
+    userId,
+    dueDate: { $lt: now },
+    status: { $ne: 'completed' },
+  });
 };

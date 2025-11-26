@@ -23,6 +23,7 @@ export default [
     rules: {
       'prettier/prettier': 'error',
       'no-console': 'off',
+      'no-underscore-dangle': ['error', { allow: ['_id'] }],
     },
   },
   {

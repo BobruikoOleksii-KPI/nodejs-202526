@@ -1,28 +1,15 @@
-const usersModel = require('../models/userModel');
+const User = require('../models/userModel');
 
-const users = usersModel.getMockUsers();
-
-exports.registerUser = (userData) => {
-  if (users.find((u) => u.email === userData.email)) {
-    return null;
-  }
-  const hashedPassword = `hashed_${userData.password}`;
-  const newUser = {
-    id: users.length + 1,
-    username: userData.username,
-    email: userData.email,
-    password: hashedPassword,
-    createdAt: new Date().toISOString(),
-  };
-  users.push(newUser);
+exports.registerUser = async (userData) => {
+  const existing = await User.findOne({ email: userData.email });
+  if (existing) return null;
+  const newUser = new User({ ...userData, password: `hashed_${userData.password}` });
+  await newUser.save();
   return newUser;
 };
 
-exports.loginUser = (email, password) => {
-  const hashedPassword = `hashed_${password}`;
-  const user = users.find((u) => u.email === email && u.password === hashedPassword);
-  if (!user) {
-    return null;
-  }
-  return `mock_jwt_token_${user.id}`;
+exports.loginUser = async (email, password) => {
+  const user = await User.findOne({ email, password: `hashed_${password}` });
+  if (!user) return null;
+  return `mock_jwt_token_${user._id}`;
 };
