@@ -7,6 +7,7 @@ const mockTasks = [
     priority: 'medium',
     status: 'pending',
     userId: 1,
+    createdAt: new Date().toISOString(),
   },
   {
     id: 2,
@@ -16,6 +17,7 @@ const mockTasks = [
     priority: 'high',
     status: 'in-progress',
     userId: 1,
+    createdAt: new Date().toISOString(),
   },
 ];
 
