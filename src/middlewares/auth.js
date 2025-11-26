@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
   if (tokenParts.length < 2) {
     return res.status(401).json({ message: 'Unauthorized: Invalid token format' });
   }
-  const userId = tokenParts[tokenParts.length - 1];
+  const userId = tokenParts[tokenParts.length - 1]; // Keep as string for MongoDB _id
   if (!userId) {
     return res.status(401).json({ message: 'Unauthorized: Invalid user ID in token' });
   }
