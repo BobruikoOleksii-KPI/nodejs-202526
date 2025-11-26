@@ -8,9 +8,8 @@ module.exports = (req, res, next) => {
   if (tokenParts.length < 2) {
     return res.status(401).json({ message: 'Unauthorized: Invalid token format' });
   }
-  const userIdStr = tokenParts[tokenParts.length - 1];
-  const userId = parseInt(userIdStr, 10);
-  if (Number.isNaN(userId)) {
+  const userId = tokenParts[tokenParts.length - 1];
+  if (!userId) {
     return res.status(401).json({ message: 'Unauthorized: Invalid user ID in token' });
   }
   req.userId = userId;
