@@ -57,6 +57,7 @@ Example Flow: A POST /api/tasks request enters via Routes (tasks.js), applies Mi
 The data focuses on users and their tasks, with a simple relational structure. Currently using in-memory mocks in models; planned for MongoDB (NoSQL) or PostgreSQL (SQL) integration.
 
 ### Entities and Attributes
+
 - **User**:
   - id (PK, integer)
   - username (string, unique)
@@ -76,7 +77,8 @@ The data focuses on users and their tasks, with a simple relational structure. C
   - createdAt (date)
 
 ### Relationships
-- **User 1 --- * Task** (One-to-Many): Users own multiple tasks; tasks link back via userId. Ensures data ownership and querying (e.g., get user's tasks).
+
+- **User 1 --- \* Task** (One-to-Many): Users own multiple tasks; tasks link back via userId. Ensures data ownership and querying (e.g., get user's tasks).
 
 ### ER Diagram
 
@@ -89,6 +91,7 @@ This model supports key queries like filtering tasks by user/status, and aggrega
 This section describes how data (Users and Tasks) is updated, changed, or aggregated based on the app's primary use cases
 
 ### Key Scenarios and Operations
+
 - **User Registration/Login**:
   - **Creation**: Insert new User with hashed password (future: in usersService.js). Aggregate: Query for unique email/username to prevent duplicates (e.g., find() check)
   - **Change**: Update lastLogin timestamp on successful auth
@@ -114,6 +117,19 @@ This section describes how data (Users and Tasks) is updated, changed, or aggreg
   - **Aggregation**: Filter tasks where dueDate < now() and status != 'completed' (e.g., .filter(t => new Date(t.dueDate) < new Date() && t.status !== 'completed'))
   - **Change**: Bulk update overdue to 'delayed' status if needed
   - **Example**: Service method to return summary { overdueCount: n, byPriority: {...} }
+
+## Interactive Prototype
+
+- **User Registration**: POST /api/users/register with body { "username": "string", "email": "string", "password": "string" }. Creates user if unique; returns userId.
+- **User Login**: POST /api/users/login with body { "email": "string", "password": "string" }. Returns mock token if valid.
+- **Create Task**: POST /api/tasks with body { "title": "string", "description": "string", "dueDate": "YYYY-MM-DD", "priority": "low/medium/high", "status": "pending/in-progress/completed" }. Requires token; assigns userId.
+- **Read All Tasks**: GET /api/tasks. Returns user's tasks only (filtered by userId).
+- **Read Single Task**: GET /api/tasks/:id. Returns if owned; 404 else.
+- **Update Task**: PATCH /api/tasks/:id with body { "status": "completed" } (or other fields). Updates if owned.
+- **Delete Task**: DELETE /api/tasks/:id. Removes if owned.
+- **Aggregate Overdue Tasks**: GET /api/tasks/overdue. Returns user's overdue tasks (dueDate < now, status != completed).
+
+Use Postman, curl, or PowerShell to test. Start server with npm start
 
 ### Setup Instructions
 
