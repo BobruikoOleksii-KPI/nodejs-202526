@@ -32,3 +32,9 @@ exports.deleteTask = (req, res) => {
   res.status(204).send();
   return undefined;
 };
+
+exports.getOverdueTasks = (req, res) => {
+  const overdue = tasksService.getOverdueTasks(req.userId);
+  res.json(overdue);
+  return undefined;
+};

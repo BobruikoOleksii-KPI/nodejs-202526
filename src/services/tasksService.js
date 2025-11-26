@@ -36,3 +36,10 @@ exports.deleteTask = (id, userId) => {
   tasks.splice(taskIndex, 1);
   return true;
 };
+
+exports.getOverdueTasks = (userId) => {
+  const now = new Date();
+  const userTasks = tasks.filter((t) => t.userId === userId);
+  const overdue = userTasks.filter((t) => new Date(t.dueDate) < now && t.status !== 'completed');
+  return overdue;
+};
