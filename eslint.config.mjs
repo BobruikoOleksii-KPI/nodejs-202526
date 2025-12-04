@@ -35,6 +35,9 @@ export default [
     ignores: [
       '**/node_modules/',
       '**/dist/',
+      '**/.stryker-tmp/sandbox-aQgjgv',
+      '**/.stryker-tmp/sandbox-AUhp03',
+      '**/.stryker-tmp/sandbox-c6S6Ps',
       'cypress.config.js',
       'src/services/tasksService.js',
       'src/controllers/tasksController.js',

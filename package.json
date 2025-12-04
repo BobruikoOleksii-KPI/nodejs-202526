@@ -11,7 +11,7 @@
     "test:jest": "jest",
     "test:integration": "jest --testPathPattern=integration",
     "test:e2e": "cypress run",
-    "test:mutation": "stryker run",
+    "test:mutation": "node --max-old-space-size=4096 node_modules/@stryker-mutator/core/bin/stryker.js run",
     "build": "echo 'Build successful' && exit 0"
   },
   "repository": {

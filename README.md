@@ -134,6 +134,13 @@ This section describes how data (Users and Tasks) is updated, changed, or aggreg
 - **Aggregate Overdue Tasks**: GET /api/tasks/overdue. Returns user's overdue tasks from DB (dueDate < now, status != completed).
   Use Postman, curl, or PowerShell to test. Start server with npm start; ensure MONGODB_URI in .env for connection.
 
+## Mutation Testing Report
+
+- **Tool**: Stryker
+- **Mutation Score**: 65.60% (148 killed out of 252 mutants)
+- **Effectiveness**: The tests are moderately effective, with strong coverage in controllers (e.g., tasksController.js at 88.30%) and services (tasksService.js at 75.00%), where unit and integration tests killed most mutants in core logic like CRUD operations. However, branches and error handling are weak (0% branch in several files), allowing 47 mutants to survive, mainly in models and routes due to untested edge cases (e.g., invalid IDs, enums). No-cov areas (39) indicate dead code or unexercised paths, and 2 errors suggest test setup issues. Overall, tests detect basic changes but miss subtle bugs in validation and middleware.
+- **What to Do Next**: Add more negative tests for errors (e.g., invalid inputs, DB failures) to kill survivors; expand E2E for full flows; remove dead code in models/routes; rerun after fixes to aim for 80%+ score.
+
 ### Setup Instructions
 
 1. Clone the repo: `git clone https://github.com/BobruikoOleksii-KPI/nodejs-202526.git`
