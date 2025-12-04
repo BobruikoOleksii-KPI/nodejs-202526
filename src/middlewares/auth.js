@@ -1,4 +1,6 @@
 /* eslint-disable consistent-return */
+const mongoose = require('mongoose');
+
 module.exports = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('mock_jwt_token_')) {
@@ -9,7 +11,7 @@ module.exports = (req, res, next) => {
     return res.status(401).json({ message: 'Unauthorized: Invalid token format' });
   }
   const userId = tokenParts[tokenParts.length - 1]; // Keep as string for MongoDB _id
-  if (!userId) {
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(401).json({ message: 'Unauthorized: Invalid user ID in token' });
   }
   req.userId = userId;

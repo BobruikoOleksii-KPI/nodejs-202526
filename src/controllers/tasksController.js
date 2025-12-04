@@ -15,7 +15,6 @@ exports.createTask = async (req, res) => {
     const newTask = await tasksService.createTask(req.body, req.userId);
     res.status(201).json(newTask);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -29,7 +28,6 @@ exports.getTaskById = async (req, res) => {
     }
     res.json(task);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -57,7 +55,6 @@ exports.deleteTask = async (req, res) => {
     }
     res.status(204).send();
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 };
@@ -67,7 +64,6 @@ exports.getOverdueTasks = async (req, res) => {
     const overdue = await tasksService.getOverdueTasks(req.userId);
     res.json(overdue);
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
 };

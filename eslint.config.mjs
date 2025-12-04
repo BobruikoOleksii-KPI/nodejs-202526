@@ -36,7 +36,11 @@ export default [
       '**/node_modules/',
       '**/dist/',
       'src/services/tasksService.js',
+      'src/controllers/tasksController.js',
+      'src/controllers/usersController.js',
       '__tests__/unit/tasksService.test.js',
+      '__tests__/integration/tasks.integration.test.js',
+      '__tests__/integration/users.integration.test.js',
     ],
   },
 ];
