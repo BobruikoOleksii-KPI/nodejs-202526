@@ -35,12 +35,14 @@ export default [
     ignores: [
       '**/node_modules/',
       '**/dist/',
+      'cypress.config.js',
       'src/services/tasksService.js',
       'src/controllers/tasksController.js',
       'src/controllers/usersController.js',
       '__tests__/unit/tasksService.test.js',
       '__tests__/integration/tasks.integration.test.js',
       '__tests__/integration/users.integration.test.js',
+      'cypress/e2e/api.cy.js',
     ],
   },
 ];
