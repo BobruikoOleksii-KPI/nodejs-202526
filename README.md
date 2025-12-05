@@ -141,6 +141,11 @@ This section describes how data (Users and Tasks) is updated, changed, or aggreg
 - **Effectiveness**: The tests are moderately effective, with strong coverage in controllers (e.g., tasksController.js at 88.30%) and services (tasksService.js at 75.00%), where unit and integration tests killed most mutants in core logic like CRUD operations. However, branches and error handling are weak (0% branch in several files), allowing 47 mutants to survive, mainly in models and routes due to untested edge cases (e.g., invalid IDs, enums). No-cov areas (39) indicate dead code or unexercised paths, and 2 errors suggest test setup issues. Overall, tests detect basic changes but miss subtle bugs in validation and middleware.
 - **What to Do Next**: Add more negative tests for errors (e.g., invalid inputs, DB failures) to kill survivors; expand E2E for full flows; remove dead code in models/routes; rerun after fixes to aim for 80%+ score.
 
+## Deployment
+- CI: GitHub Actions checks formatting (prettier), linting (eslint), tests (jest), and build on PRs/pushes. PR merge requires passing CI.
+- CD: Deploys to Vercel staging on main push, available at https://nodejs-202526-staging.vercel.app.
+- Staging Server: Vercel (free, public access with MongoDB integration).
+
 ### Test Section 123
 
 ### Setup Instructions
