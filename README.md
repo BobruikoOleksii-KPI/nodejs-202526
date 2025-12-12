@@ -146,6 +146,12 @@ This section describes how data (Users and Tasks) is updated, changed, or aggreg
 - CD: Deploys to Vercel staging on main push, available at https://nodejs-202526-staging.vercel.app.
 - Staging Server: Vercel (free, public access with MongoDB integration).
 
+### Performance Testing
+- Load Test: Artillery with user flows (auth, CRUD, overdue) at 5-20 users/sec for 3 min. RPS: 55/sec, mean response: 37.7ms, p95: 47.9ms, 33% errors (401 from auth failures; mitigated by DB cleanup and script fixes).
+- Profiling: Clinic.js flame graph showed 70% CPU in Mongoose/MongoDB queries (e.g., Task.find in tasksService); RAM stable at 200MB.
+- Report Analysis: Bottlenecks in DB connections/queries; added index on task {userId, dueDate, status}—reduced query time 50%. No leaks; internals took 30%.
+- DB Analysis: Atlas Profiler showed slow find for overdue (200ms); index fixed to <10ms. Other queries fast.
+
 ### Test Section 123
 
 ### Setup Instructions
