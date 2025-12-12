@@ -12,7 +12,9 @@
     "test:integration": "jest --testPathPattern=integration",
     "test:e2e": "cypress run",
     "test:mutation": "node --max-old-space-size=4096 node_modules/@stryker-mutator/core/bin/stryker.js run",
-    "build": "echo 'Build successful' && exit 0"
+    "build": "echo 'Build successful' && exit 0",
+    "load-test": "artillery run load-test.yml",
+    "profile": "clinic flame -- node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -32,9 +34,13 @@
     "mongoose": "^9.0.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@eslint/compat": "^2.0.0",
     "@stryker-mutator/core": "^9.4.0",
     "@stryker-mutator/jest-runner": "^9.4.0",
+    "artillery": "^2.0.27",
+    "clinic": "^13.0.0",
     "cypress": "^15.7.1",
     "eslint": "^9.39.1",
     "eslint-config-airbnb-base": "^15.0.0",
